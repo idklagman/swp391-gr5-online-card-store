@@ -1,4 +1,4 @@
-package servlets;
+﻿package servlets;
 
 import dao.UserDAO;
 import models.User;
@@ -14,7 +14,7 @@ public class LoginServlet extends jakarta.servlet.http.HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.getRequestDispatcher("/META-INF/views/staff/login.jsp").forward(req, resp);
+        req.getRequestDispatcher("/META-INF/views/login.jsp").forward(req, resp);
     }
 
     @Override
@@ -26,10 +26,10 @@ public class LoginServlet extends jakarta.servlet.http.HttpServlet {
             if (u != null) {
                 HttpSession s = req.getSession(true);
                 s.setAttribute("currentUser", u);
-                resp.sendRedirect(req.getContextPath() + "/staff/products");
+                resp.sendRedirect(req.getContextPath() + "/admin/products");
             } else {
                 req.setAttribute("error", "Invalid credentials");
-                req.getRequestDispatcher("/META-INF/views/staff/login.jsp").forward(req, resp);
+                req.getRequestDispatcher("/META-INF/views/login.jsp").forward(req, resp);
             }
         } catch (Exception e) {
             throw new ServletException(e);

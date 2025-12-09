@@ -1,11 +1,7 @@
-package servlets;
+﻿package servlets;
 
-import dao.CategoryDAO;
 import dao.ProductDAO;
-import dao.ProviderDAO;
-import models.Category;
 import models.Product;
-import models.Provider;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -15,40 +11,32 @@ import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.util.List;
 
-@WebServlet("/staff/products")
+@WebServlet("/admin/products")
 public class ProductServlet extends jakarta.servlet.http.HttpServlet {
     private final ProductDAO dao = new ProductDAO();
-    private final CategoryDAO categoryDao = new CategoryDAO();
-    private final ProviderDAO providerDao = new ProviderDAO();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String action = req.getParameter("action");
         try {
             if ("new".equals(action)) {
-                // provide categories and providers for select lists
-                req.setAttribute("categories", categoryDao.findAll());
-                req.setAttribute("providers", providerDao.findAll());
-                req.getRequestDispatcher("/META-INF/views/staff/productForm.jsp").forward(req, resp);
+                req.getRequestDispatcher("/META-INF/views/admin/productForm.jsp").forward(req, resp);
                 return;
             } else if ("edit".equals(action)) {
                 Long id = Long.parseLong(req.getParameter("id"));
                 Product p = dao.findById(id);
                 req.setAttribute("product", p);
-                // provide categories and providers for select lists
-                req.setAttribute("categories", categoryDao.findAll());
-                req.setAttribute("providers", providerDao.findAll());
-                req.getRequestDispatcher("/META-INF/views/staff/productForm.jsp").forward(req, resp);
+                req.getRequestDispatcher("/META-INF/views/admin/productForm.jsp").forward(req, resp);
                 return;
             } else if ("delete".equals(action)) {
                 Long id = Long.parseLong(req.getParameter("id"));
                 dao.delete(id);
-                resp.sendRedirect(req.getContextPath() + "/staff/products");
+                resp.sendRedirect(req.getContextPath() + "/admin/products");
                 return;
             }
             List<Product> list = dao.findAll();
             req.setAttribute("products", list);
-            req.getRequestDispatcher("/META-INF/views/staff/productList.jsp").forward(req, resp);
+            req.getRequestDispatcher("/META-INF/views/admin/productList.jsp").forward(req, resp);
         } catch (SQLException e) {
             throw new ServletException(e);
         }
@@ -72,7 +60,7 @@ public class ProductServlet extends jakarta.servlet.http.HttpServlet {
             p.setStatus(req.getParameter("status"));
 
             if (p.getId() == null) dao.create(p); else dao.update(p);
-            resp.sendRedirect(req.getContextPath() + "/staff/products");
+            resp.sendRedirect(req.getContextPath() + "/admin/products");
         } catch (SQLException e) {
             throw new ServletException(e);
         }

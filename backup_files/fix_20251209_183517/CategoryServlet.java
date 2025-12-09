@@ -1,4 +1,4 @@
-package servlets;
+﻿package servlets;
 
 import dao.CategoryDAO;
 import models.Category;
@@ -10,7 +10,7 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
 
-@WebServlet("/staff/categories")
+@WebServlet("/admin/categories")
 public class CategoryServlet extends jakarta.servlet.http.HttpServlet {
     private final CategoryDAO dao = new CategoryDAO();
 
@@ -19,23 +19,23 @@ public class CategoryServlet extends jakarta.servlet.http.HttpServlet {
         String action = req.getParameter("action");
         try {
             if ("new".equals(action)) {
-                req.getRequestDispatcher("/META-INF/views/staff/categoryForm.jsp").forward(req, resp);
+                req.getRequestDispatcher("/META-INF/views/admin/categoryForm.jsp").forward(req, resp);
                 return;
             } else if ("edit".equals(action)) {
                 Long id = Long.parseLong(req.getParameter("id"));
                 Category c = dao.findById(id);
                 req.setAttribute("category", c);
-                req.getRequestDispatcher("/META-INF/views/staff/categoryForm.jsp").forward(req, resp);
+                req.getRequestDispatcher("/META-INF/views/admin/categoryForm.jsp").forward(req, resp);
                 return;
             } else if ("delete".equals(action)) {
                 Long id = Long.parseLong(req.getParameter("id"));
                 dao.delete(id);
-                resp.sendRedirect(req.getContextPath() + "/staff/categories");
+                resp.sendRedirect(req.getContextPath() + "/admin/categories");
                 return;
             }
             List<Category> list = dao.findAll();
             req.setAttribute("categories", list);
-            req.getRequestDispatcher("/META-INF/views/staff/categoryList.jsp").forward(req, resp);
+            req.getRequestDispatcher("/META-INF/views/admin/categoryList.jsp").forward(req, resp);
         } catch (SQLException e) {
             throw new ServletException(e);
         }
@@ -53,7 +53,7 @@ public class CategoryServlet extends jakarta.servlet.http.HttpServlet {
             c.setStatus(req.getParameter("status"));
 
             if (c.getId() == null) dao.create(c); else dao.update(c);
-            resp.sendRedirect(req.getContextPath() + "/staff/categories");
+            resp.sendRedirect(req.getContextPath() + "/admin/categories");
         } catch (SQLException e) { throw new ServletException(e); }
     }
 }
