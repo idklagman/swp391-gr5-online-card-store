@@ -7,7 +7,7 @@ import java.sql.SQLException;
 public class DBConnect {
 
     // ====== CONFIG DATABASE ======
-    private static final String URL = "jdbc:mysql://localhost:3306/itp?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC"; // sua ten db
+    private static final String URL = "jdbc:mysql://localhost:3306/ocs?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC"; // sua ten db
     private static final String USER = "root"; // sua tai khoan
     private static final String PASSWORD = "123456"; // pass
 
